@@ -21,14 +21,6 @@ This is a visual and functional recreation of the Two Good Co landing page. It w
 
 ---
 
-## 📸 Screenshots
-
-*(Add screenshots of your clone here)*  
-Or use a GIF to show the scroll + hover effects in action.
-
----
-
-
 
 ### Prerequisites
 
