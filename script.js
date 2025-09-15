@@ -1,11 +1,21 @@
 function locomotiveanimation() {
     gsap.registerPlugin(ScrollTrigger); // ✦ Register ScrollTrigger plugin from GSAP
 
-    const locoScroll = new LocomotiveScroll({ // ✦ Initialize LocomotiveScroll
-        el: document.querySelector("#main"), // ✦ Scrolling container
-        smooth: true, // ✦ Enable smooth scrolling
-        smartphone: { smooth: true },
-        tablet: { smooth: true }
+    // Fix for LocomotiveScroll v4+ and mobile/tablet config
+    const locoScroll = new LocomotiveScroll({
+        el: document.querySelector("#main"),
+        smooth: true,
+        multiplier: 1,
+        smartphone: {
+            smooth: true,
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+        },
+        tablet: {
+            smooth: true,
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+        }
     });
 
     locoScroll.on("scroll", ScrollTrigger.update); // ✦ Sync scroll position with ScrollTrigger
