@@ -76,7 +76,22 @@ function navbaranimation() {
         }
     });
 }
-navbaranimation(); // ✦ Run the navbar animation
+
+// Overlay animation for .dets on scroll (works on mobile and desktop)
+document.querySelectorAll('#page2 .elem').forEach(function(elem) {
+    var dets = elem.querySelector('.dets');
+    gsap.to(dets, {
+        y: -50,
+        opacity: 1,
+        scrollTrigger: {
+            trigger: elem,
+            scroller: '#main',
+            start: 'top 80%',
+            end: 'top 30%',
+            scrub: true
+        }
+    });
+});
 
 var videocon = document.querySelector("#video-container"); // ✦ Get the video container
 var playbtn = document.querySelector("#play"); // ✦ Get the play button
