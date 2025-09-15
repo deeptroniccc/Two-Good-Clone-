@@ -3,7 +3,9 @@ function locomotiveanimation() {
 
     const locoScroll = new LocomotiveScroll({ // ✦ Initialize LocomotiveScroll
         el: document.querySelector("#main"), // ✦ Scrolling container
-        smooth: true // ✦ Enable smooth scrolling
+        smooth: true, // ✦ Enable smooth scrolling
+        smartphone: { smooth: true },
+        tablet: { smooth: true }
     });
 
     locoScroll.on("scroll", ScrollTrigger.update); // ✦ Sync scroll position with ScrollTrigger
@@ -70,25 +72,36 @@ var videocon = document.querySelector("#video-container"); // ✦ Get the video 
 var playbtn = document.querySelector("#play"); // ✦ Get the play button
 var logo = document.querySelector("#logo"); // ✦ Get the logo inside container
 
-videocon.addEventListener("mouseenter", function () {
-    gsap.to(playbtn, {
-         scale: 1, opacity: 1 
-        }); // ✦ Show play button on hover
-});
+function showPlayBtn() {
+    gsap.to(playbtn, { scale: 1, opacity: 1 });
+}
+function hidePlayBtn() {
+    gsap.to(playbtn, { scale: 0, opacity: 0 });
+}
+function movePlayBtnLogo(x, y) {
+    gsap.to(playbtn, { left: x - 40, top: y - 40 });
+    gsap.to(logo, { left: x - 25, top: y - 25 });
+}
 
-videocon.addEventListener("mouseleave", function () {
-    gsap.to(playbtn, { 
-        scale: 0, opacity: 0
-     }); // ✦ Hide play button on leave
-});
-
-videocon.addEventListener("mousemove", function (dets) {
-    gsap.to(playbtn, {
-         left: dets.x - 40, top: dets.y - 40
-        
-        }); // ✦ Move play button with mouse
-    gsap.to(logo, { left: dets.x - 25, top: dets.y - 25 }); // ✦ Move logo with mouse
-});
+if (window.innerWidth > 800) {
+    videocon.addEventListener("mouseenter", showPlayBtn);
+    videocon.addEventListener("mouseleave", hidePlayBtn);
+    videocon.addEventListener("mousemove", function (dets) {
+        movePlayBtnLogo(dets.x, dets.y);
+    });
+} else {
+    // Touch support for mobile
+    videocon.addEventListener("touchstart", function (e) {
+        showPlayBtn();
+        var touch = e.touches[0];
+        movePlayBtnLogo(touch.clientX, touch.clientY);
+    });
+    videocon.addEventListener("touchmove", function (e) {
+        var touch = e.touches[0];
+        movePlayBtnLogo(touch.clientX, touch.clientY);
+    });
+    videocon.addEventListener("touchend", hidePlayBtn);
+}
 
 gsap.from("#page1 h1", {
     y: 100, // ✦ Start 100px below
@@ -105,11 +118,16 @@ gsap.from("#page1 #video-container", {
     duration: 0.5 // ✦ Quick transition
 });
 
-document.addEventListener("mousemove", function (dets) {
-    gsap.to("#cursor", {
-        left: dets.x, top: dets.y // ✦ Move custom cursor to mouse
+if (window.innerWidth > 800) {
+    document.addEventListener("mousemove", function (dets) {
+        gsap.to("#cursor", {
+            left: dets.x, top: dets.y // ✦ Move custom cursor to mouse
+        });
     });
-});
+    document.querySelector("#cursor").style.display = "block";
+} else {
+    document.querySelector("#cursor").style.display = "none";
+}
 
 var children = document.querySelectorAll(".child"); // ✦ Select all .child elements
 
